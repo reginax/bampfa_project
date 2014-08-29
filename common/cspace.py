@@ -64,7 +64,10 @@ def make_get_request(realm, uri, hostname, protocol, port, username, password):
     :param password:
     """
 
-    server = protocol + "://" + hostname + ":" + port
+    if port == '':
+        server = protocol + "://" + hostname
+    else:
+        server = protocol + "://" + hostname + ":" + port
     passMgr = urllib2.HTTPPasswordMgr()
     passMgr.add_password(realm, server, username, password)
     authhandler = urllib2.HTTPBasicAuthHandler(passMgr)
@@ -90,7 +93,11 @@ def make_get_request(realm, uri, hostname, protocol, port, username, password):
 
 
 def postxml(realm, uri, hostname, protocol, port, username, password, payload, requestType):
-    server = protocol + "://" + hostname + ":" + port
+
+    if port == '':
+        server = protocol + "://" + hostname
+    else:
+        server = protocol + "://" + hostname + ":" + port
     passMgr = urllib2.HTTPPasswordMgr()
     passMgr.add_password(realm, server, username, password)
     authhandler = urllib2.HTTPBasicAuthHandler(passMgr)
