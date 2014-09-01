@@ -1,0 +1,24 @@
+<table width="100%">
+
+    {% for field in fields %}
+        <tr>
+            <td {% if field.style %} style="{{ field.style }}"{% endif %}>
+                <label>{{ field.label }}</label>
+            </td>
+
+            <td>
+            {% if 'dropdown' in field.fieldtype %}
+                <select id="{{ field.name }}" name="{{ field.name }}">
+                    <option value="">Please select</option>
+                    {% for value in field.dropdowns %}
+                        <option value="{{ value.0 }}"{% if value.0 == searchValues.dropdown %} selected{% endif %}>{{ value.0|slice:":40" }} ({{ value.1 }})</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="{{ field.type }}" id="{{ field.name }}" name="{{ field.name }}" source="{{ suggestsource }}"
+                       value="{{ searchValues.field }}"/>
+            {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

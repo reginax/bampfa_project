@@ -90,7 +90,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '4vzb=dif9s33-dz9y=*0t7se44cpp6fzxu(59b2_ke^yk0ke1%'
+SECRET_KEY = '4vzb=dif9s33-dz9y=*0t7se44cqq6fzxu(59b2_ke^yk0ke1%'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'hello',
     'service',
+    'ireports',
+    'toolbox'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -152,7 +154,7 @@ LOGGING = {
     },
     'formatters': {
         'standard': {
-            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'format': "[%(asctime)s] %(levelname)s :: %(message)s",
             'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'verbose': {
@@ -172,8 +174,8 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOGS_DIR + os.sep + 'logfile.txt',
-            'maxBytes': 50000,
-            'backupCount': 2,
+            'maxBytes': 10000000,
+            'backupCount': 5,
             'formatter': 'standard',
         },
         'console': {

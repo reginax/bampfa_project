@@ -24,6 +24,8 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^$', 'hello.views.home', name='home'),
                        url(r'^service/', include('service.urls')),
+                       url(r'^ireports/', include('ireports.urls')),
+                       url(r'^toolbox/', include('toolbox.urls')),
                        url(r'^accounts/login/$', views.login, name='login'),
                        url(r'^accounts/logout/$', views.logout_then_login, name='logout'),
                        )

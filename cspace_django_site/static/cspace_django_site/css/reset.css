@@ -46,7 +46,7 @@ blockquote:after,
 q:before, 
 q:after {content: ''; content: none;}
 
-a {margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; background: transparent; text-decoration: none;}
+a {margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; background: transparent; text-decoration: none; cursor: pointer;}
 
 del {text-decoration: line-through;}
 
@@ -69,7 +69,8 @@ pre {
 }
 
 input[type="radio"] {vertical-align: text-bottom;}
-input[type="checkbox"] {vertical-align: bottom;}
+/* input[type="checkbox"] {vertical-align: bottom;} -- I like it better without! */
+input[type="checkbox"] {}
 .ie7 input[type="checkbox"] {vertical-align: baseline;}
 .ie6 input {vertical-align: text-bottom;}
 
