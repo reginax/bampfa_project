@@ -12,6 +12,7 @@ from operator import itemgetter
 
 from common import cspace # we use the config file reading function
 from cspace_django_site import settings
+from cspace_django_site.main import cspace_django_site
 
 from os import path
 
@@ -39,8 +40,6 @@ except ImportError:
             except ImportError:
                 print("Failed to import ElementTree from any known place")
 
-from common import cspace
-from cspace_django_site.main import cspace_django_site
 
 config = cspace_django_site.getConfig()
 TITLE = 'iReports Available'

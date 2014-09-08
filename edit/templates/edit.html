@@ -1,0 +1,75 @@
+{% extends "cspace_django_site/base_site.html" %}
+{% load i18n admin_static %}
+{% load staticfiles %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static "toolbox/css/tablesorter.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "cspace_django_site/css/smoothness/jquery-ui-1.10.3.custom.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "toolbox/css/toolbox.css" %}"/>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static "cspace_django_site/js/jquery-1.10.0.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "cspace_django_site/js/jquery-ui-1.10.3.custom.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "toolbox/js/toolbox.js" %}"></script>
+    <script type="text/javascript" src="{% static "toolbox/js/jquery.tablesorter.js" %}"></script>
+{% endblock %}
+
+{% block loginBtn %}
+<div id="user-tools">
+    <a href="{% url 'login' %}?next=/bampfa_project/edit/" id="login" class="prettyBtn">{% trans 'Sign in' %}</a>
+</div>
+{% endblock %}
+
+{% block branding %}
+    <h4 class="bannerLeft"></h4>
+    <h4 class="bannerRight"></h4>
+    <h1 class="bannerTitle" id="site-name">{% trans ' ' %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% if errormsg %}
+           <span style="color: red">{{ errormsg }}</span>
+        {% endif %}
+        <div class="searchPanel">
+            {% if entity == 'listentities' %}
+                <table cellspace="1" id="resultsListing">
+                        {% for entitytype in entitytypes %}
+                            <tr><td><a class="facet-item" href="{{ entitytype }}">{{ entitytype }}</a></td></tr>
+                        {% endfor %}
+                </table>
+            {% else %}
+                <form class="searchForm" id="search">
+                    {% csrf_token %}
+                    <div>
+                        {% include "editfields.html" %}
+                        {% include "buttons.html" %}
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <div  id="waitingImage" style="display: none">
+            <img src="{% static "cspace_django_site/images/timer-animated.gif" %}" alt="Searching..."/>
+       </div>
+        <div id="resultsPanel">
+            {% if items %}
+                {% include "list.html" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+  <table width="100%">
+    <tbody>
+    <tr>
+      <td style="vertical-align: middle">Current time: {{ timestamp }}. This is v4.0.1.</td>
+      <td style="vertical-align: middle;width: 70px;">powered by </td>
+      <td style="text-align: right; width: 160px;"><img src="{% static "cspace_django_site/images/header-logo-cspace.png" %}" height="30px"></td>
+    </tr>
+    </tbody>
+  </table>
+{% endblock %}
+
+

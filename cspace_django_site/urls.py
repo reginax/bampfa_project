@@ -26,6 +26,8 @@ urlpatterns = patterns('',
                        url(r'^service/', include('service.urls')),
                        url(r'^ireports/', include('ireports.urls')),
                        url(r'^toolbox/', include('toolbox.urls')),
+                       url(r'^edit/', include('edit.urls')),
                        url(r'^accounts/login/$', views.login, name='login'),
                        url(r'^accounts/logout/$', views.logout_then_login, name='logout'),
+                       url(r'^landing', include('landing.urls', namespace='landing')),
                        )

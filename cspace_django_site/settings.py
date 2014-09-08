@@ -136,6 +136,8 @@ INSTALLED_APPS = (
     'hello',
     'service',
     'ireports',
+    'edit',
+    'landing',
     'toolbox'
 )
 
@@ -223,6 +225,7 @@ else:
 
 logging.debug('WSGI_BASE =' + WSGI_BASE)
 LOGIN_URL = WSGI_BASE + '/accounts/login'
+LOGIN_REDIRECT_URL = WSGI_BASE + '/landing'
 
 #
 # AuthN backends
