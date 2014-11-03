@@ -37,13 +37,13 @@
     <div id="content-main">
         <div class="toggled">
             <div id="aboutTarget" style="display:none">
-                {% include "about.html" %}
+                {% include "toolbox_about.html" %}
              </div>
             <div id="helpTarget" style="display:none">
-                {% include "help.html" %}
+                {% include "toolbox_help.html" %}
             </div>
             <div id="creditsTarget" style="display:none">
-                {% include "credits.html" %}
+                {% include "toolbox_credits.html" %}
             </div>
         </div>
         <div class="searchPanel">
@@ -57,8 +57,8 @@
                 <form class="searchForm" id="search">
                     {% csrf_token %}
                     <div>
-                        {% include "fields.html" %}
-                        {% include "buttons.html" %}
+                        {% include "toolbox_fields.html" %}
+                        {% include "toolbox_buttons.html" %}
                     </div>
                 </form>
             {% endif %}
@@ -68,7 +68,7 @@
        </div>
         <div id="resultsPanel">
             {% if items %}
-                {% include "list.html" %}
+                {% include "toolbox_list.html" %}
             {% endif %}
         </div>
     </div>

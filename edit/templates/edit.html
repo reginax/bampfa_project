@@ -43,8 +43,7 @@
                 <form class="searchForm" id="search">
                     {% csrf_token %}
                     <div>
-                        {% include "editfields.html" %}
-                        {% include "buttons.html" %}
+                        {% include "edit_fields.html" %}
                     </div>
                 </form>
             {% endif %}
@@ -54,7 +53,7 @@
        </div>
         <div id="resultsPanel">
             {% if items %}
-                {% include "list.html" %}
+                {% include "edit_list.html" %}
             {% endif %}
         </div>
     </div>

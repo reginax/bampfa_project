@@ -9,13 +9,13 @@ from django import forms
 from utils import loginfo, doApp, getAppList, setConstants
 
 
-@login_required()
+#@login_required()
 def index(request):
     context = setConstants({'appname' : 'listapps', 'apps' : getAppList()})
     return render(request, 'toolbox.html', context)
 
 
-@login_required()
+#@login_required()
 def tool(request, appname):
 
     context = {}

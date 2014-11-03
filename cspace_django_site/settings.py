@@ -138,7 +138,15 @@ INSTALLED_APPS = (
     'ireports',
     'edit',
     'landing',
-    'toolbox'
+    'toolbox',
+    'suggestpostgres',
+    'suggestsolr',
+    'suggest',
+    'imageserver',
+    'imagebrowser',
+    'imaginator',
+    'search',
+    'uploadmedia'
 )
 
 # A sample logging configuration. The only tangible logging
