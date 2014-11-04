@@ -21,7 +21,7 @@ SEARCHRESULTS = {}
 
 
 def direct(request):
-    return redirect('search/search/')
+    return redirect('search/')
 
 
 #@login_required()

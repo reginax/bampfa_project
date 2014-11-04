@@ -1,9 +1,9 @@
 # Parameters for BAMPFA collections browser
 #
-date			10/30/14
-revision			1.0
+date			11/4/14
+revision			1.1
 #
-title	BAMPFA Collection Info
+title	Collections Browser
 #
 #
 server	http://localhost:8983/solr
