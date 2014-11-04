@@ -56,7 +56,7 @@ def index(request):
 
         # do search
         loginfo('start search', context, request)
-        context = doSearch(SOLRSERVER, SOLRCORE, context)
+        context = doSearch(context)
 
         return render(request, 'imagineImages.html', context)
 
