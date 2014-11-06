@@ -110,8 +110,9 @@
                 {% if jobinfo %}
                     <hr/>
                     {% if jobinfo.status == 'uploadmedia' %}
-                        <h2>Job {{ jobinfo.jobnumber }} enqueued. Estimated time to
-                            completion: {{ jobinfo.estimatedtime }} minutes. Please check back then.</h2>
+                        <h2>Job {{ jobinfo.jobnumber }} enqueued; {{ count }} images.</h2>
+                        <!-- h2>Job {{ jobinfo.jobnumber }} enqueued. Estimated time to
+                            run: {{ jobinfo.estimatedtime }} minutes.</h2 -->
                     {% endif %}
                     {% if jobinfo.status == 'createmedia' %}
                         <h2>Job {{ jobinfo.jobnumber }} completed. Time required: {{ elapsedtime }} seconds.</h2>
@@ -132,7 +133,7 @@
     <table width="100%">
         <tbody>
         <tr>
-            <td style="vertical-align: middle">Current time: {{ timestamp }}. This is the <span style="color:red">PRODUCTION</span> version.</td>
+            <td style="vertical-align: middle">Current time: {{ timestamp }}. This is the <span style="color:{{ serverinfo.serverlabelcolor }}">{{ serverinfo.serverlabel }}</span> version.</td>
             <td style="vertical-align: middle;width: 70px;">powered by</td>
             <td style="text-align: right; width: 160px;"><img src="{% static "cspace_django_site/images/header-logo-cspace.png" %}" height="30px"></td>
         </tr>

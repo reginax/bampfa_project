@@ -2,27 +2,39 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 import csv
 import codecs
+import sys
 import time, datetime
 import logging
-from os import listdir
 from xml.sax.saxutils import escape
+
+from common import cspace # we use the config file reading function
+from cspace_django_site import settings
+from os import path, listdir
+from os.path import isfile, isdir, join
+
+config = cspace.getConfig(path.join(settings.BASE_PARENT_DIR, 'config'), 'uploadmedia')
+TEMPIMAGEDIR = config.get('files', 'directory')
+JOBDIR = path.join(TEMPIMAGEDIR, '%s')
+SERVERINFO = {
+    'serverlabelcolor': config.get('info', 'serverlabelcolor'),
+    'serverlabel': config.get('info', 'serverlabel')
+}
+
+if isdir(TEMPIMAGEDIR):
+    print "Using %s as working directory for images and metadata files" % TEMPIMAGEDIR
+else:
+    raise Exception("working directory %s does not exist. this webapp will not work!" % TEMPIMAGEDIR)
 
 # Get an instance of a logger, log some startup info
 logger = logging.getLogger(__name__)
 
-# these should go into a config file!
-tempimagedir = "/tmp/upload_cache/%s"
-jobdir = "/tmp/upload_cache/%s"
-
 
 def getJobfile(jobnumber):
-    return jobdir % jobnumber
+    return JOBDIR % jobnumber
 
 
 def getJoblist():
-    from os import listdir
-    from os.path import isfile, join
-    jobpath = jobdir % ''
+    jobpath = JOBDIR % ''
     filelist = [ f for f in listdir(jobpath) if isfile(join(jobpath,f)) and ('.csv' in f or 'trace.log' in f) ]
     jobdict = {}
     for f in sorted(filelist):
@@ -60,7 +72,7 @@ def loginfo(infotype, line, request):
 
 
 def getQueue(jobtypes):
-    return [x for x in listdir(jobdir % '') if '%s.csv' % jobtypes in x]
+    return [x for x in listdir(JOBDIR % '') if '%s.csv' % jobtypes in x]
 
 
 def getDropdowns():
@@ -127,7 +139,7 @@ def writeCsv(filename, items, writeheader):
 
 # following function borrowed from Django docs, w modifications
 def handle_uploaded_file(f, imageinfo):
-    destination = open(tempimagedir % f.name, 'wb+')
+    destination = open(path.join(TEMPIMAGEDIR, '%s') % f.name, 'wb+')
     with destination:
         for chunk in f.chunks():
             destination.write(chunk)

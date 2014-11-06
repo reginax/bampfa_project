@@ -353,33 +353,36 @@ def doSearch(context):
             queryterms.append(searchTerm)
             urlterms.append('%s=%s' % (p, cgi.escape(requestObject[p])))
         querystring = ' AND '.join(queryterms)
-        print querystring
 
         if urlterms != []:
             urlterms.append('displayType=%s' % context['displayType'])
             urlterms.append('maxresults=%s' % context['maxresults'])
         url = '&'.join(urlterms)
 
-    try:
+    if 'pixonly' in requestObject:
         pixonly = requestObject['pixonly']
         querystring += " AND %s:[* TO *]" % PARMS['blobs'][3]
         url += '&pixonly=True'
-    except:
+    else:
         pixonly = None
 
-    try:
+    if 'locsonly' in requestObject:
         locsonly = requestObject['locsonly']
         querystring += " AND %s:[-90,-180 TO 90,180]" % LOCATION
         url += '&locsonly=True'
-    except:
+    else:
         locsonly = None
 
+
+    print querystring
     try:
         response = s.query(querystring, facet='true', facet_field=facetfields, fq={},
                            rows=context['maxresults'], facet_limit=MAXFACETS,
                            facet_mincount=1)
+        print 'solr search succeeded, %s results' % response.numFound
     except:
         #raise
+        print 'solr search failed: %s' % ''
         context['errormsg'] = 'Solr4 query failed'
         return context
 
