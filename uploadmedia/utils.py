@@ -4,10 +4,11 @@ import csv
 import codecs
 import sys
 import time, datetime
+import json
 import logging
 from xml.sax.saxutils import escape
 
-from common import cspace # we use the config file reading function
+from common import cspace  # we use the config file reading function
 from cspace_django_site import settings
 from os import path, listdir
 from os.path import isfile, isdir, join
@@ -35,35 +36,43 @@ def getJobfile(jobnumber):
 
 def getJoblist():
     jobpath = JOBDIR % ''
-    filelist = [ f for f in listdir(jobpath) if isfile(join(jobpath,f)) and ('.csv' in f or 'trace.log' in f) ]
+    filelist = [f for f in listdir(jobpath) if isfile(join(jobpath, f)) and ('.csv' in f or 'trace.log' in f)]
     jobdict = {}
     for f in sorted(filelist):
         parts = f.split('.')
-        if 'original' in parts[1]: continue
-        elif 'processed' in parts[1]: status = 'complete'
-        elif 'inprogress' in parts[1]: status = 'job started'
-        elif 'step1' in parts[1]: status = 'pending'
-        elif 'step2' in parts[1]: continue
+        if 'original' in parts[1]:
+            continue
+        elif 'processed' in parts[1]:
+            status = 'complete'
+        elif 'inprogress' in parts[1]:
+            status = 'job started'
+        elif 'step1' in parts[1]:
+            status = 'pending'
+        elif 'step2' in parts[1]:
+            continue
         # we are in fact keeping the step2 files for now, but let's not show them...
-        #elif 'step2' in parts[1]: status = 'blobs in progress'
-        elif 'step3' in parts[1]: status = 'media in progress'
-        elif 'trace' in parts[1]: status = 'run log'
-        else: status = 'unknown'
+        # elif 'step2' in parts[1]: status = 'blobs in progress'
+        elif 'step3' in parts[1]:
+            status = 'media in progress'
+        elif 'trace' in parts[1]:
+            status = 'run log'
+        else:
+            status = 'unknown'
         jobkey = parts[0]
         if not jobkey in jobdict: jobdict[jobkey] = []
-        jobdict[jobkey].append([ f, status])
-    joblist = [[ jobkey,False,jobdict[jobkey]] for jobkey in sorted(jobdict.keys(),reverse=True)]
+        jobdict[jobkey].append([f, status])
+    joblist = [[jobkey, False, jobdict[jobkey]] for jobkey in sorted(jobdict.keys(), reverse=True)]
     for ajob in joblist:
         ajob[1] = True
-        for s in ajob[2] :
-            if s[1] in ['complete','pending','job started']: ajob[1] = False
+        for s in ajob[2]:
+            if s[1] in ['complete', 'pending', 'job started']: ajob[1] = False
     count = len(joblist)
     return joblist[0:200], count
 
 
 def loginfo(infotype, line, request):
     logdata = ''
-    #user = getattr(request, 'user', None)
+    # user = getattr(request, 'user', None)
     if request.user and not request.user.is_anonymous():
         username = request.user.username
     else:
@@ -76,21 +85,15 @@ def getQueue(jobtypes):
 
 
 def getDropdowns():
-
-    # these should to into a config file. Or someother place... :-(
+    allowintervention = config.get('info', 'allowintervention')
+    creators = config.get('info', 'creators')
+    creators = json.loads(creators)
+    rightsholders = config.get('info', 'rightsholders')
+    rightsholders = json.loads(rightsholders)
     return {
-        'creators':
-            {
-                "Alicja Egbert": "urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name(8683)'Alicja Egbert'",
-                "Natasha Johnson": "urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name(7652)'Natasha Johnson'",
-                "Jon Oligmueller": "urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name(JonOligmueller1372192617217)'Jon Oligmueller'",
-                "Paolo Pellegatti": "urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name(8020)'Paolo Pellegatti'"
-            },
-        'rightsholders':
-            {
-                "Phoebe A. Hearst Museum of Anthropology": "urn:cspace:bampfa.cspace.berkeley.edu:orgauthorities:name(organization):item:name(8107)'Phoebe A. Hearst Museum of Anthropology'",
-                "University of California at Berkeley Regents": "urn:cspace:bampfa.cspace.berkeley.edu:orgauthorities:name(organization):item:name(6390)'University of California at Berkeley Regents'"
-            }
+        'allowintervention': allowintervention,
+        'creators': creators,
+        'rightsholders': rightsholders
     }
 
 
@@ -106,8 +109,14 @@ def get_exif(fn):
 
 
 def getNumber(filename):
-    objectnumber = filename.split('_')[0]
-    objectnumber = objectnumber.replace('.JPG','').replace('.jpg','')
+    # the following is only for bampfa...
+    if 'bampfa_' in filename:
+        objectnumber = filename.replace('bampfa_', '')
+        objectnumber = objectnumber.replace('-', '.')  # now why would they have done this...?
+    else:
+        objectnumber = filename
+    objectnumber = objectnumber.split('_')[0]
+    objectnumber = objectnumber.replace('.JPG', '').replace('.jpg', '')
     return objectnumber
 
 
@@ -163,25 +172,26 @@ def assignValue(defaultValue, override, imageData, exifvalue, refnameList):
     else:
         return '', ''
 
-# this function not currently in use. Copied from another script, it's not Django-compatible
-def viewFile(logfilename,numtodisplay):
 
+# this function not currently in use. Copied from another script, it's not Django-compatible
+def viewFile(logfilename, numtodisplay):
     print '<table width="100%">\n'
-    print ('<tr>'+ (4 * '<th class="ncell">%s</td>') +'</tr>\n') % ('locationDate,objectNumber,objectStatus,handler'.split(','))
+    print ('<tr>' + (4 * '<th class="ncell">%s</td>') + '</tr>\n') % (
+    'locationDate,objectNumber,objectStatus,handler'.split(','))
     try:
         file_handle = open(logfilename)
         file_size = file_handle.tell()
-        file_handle.seek(max(file_size - 9*1024, 0))
+        file_handle.seek(max(file_size - 9 * 1024, 0))
 
         lastn = file_handle.read().splitlines()[-numtodisplay:]
         for i in lastn:
-            i = i.replace('urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name','')
+            i = i.replace('urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name', '')
             line = ''
-            if i[0] == '#' : pass
-        for l in [i.split('\t')[x] for x in [0,1,2,5]] :
+            if i[0] == '#': pass
+        for l in [i.split('\t')[x] for x in [0, 1, 2, 5]]:
             line += ('<td>%s</td>' % l)
-            #for l in i.split('\t') : line += ('<td>%s</td>' % l)
-            print '<tr>' + line  + '</tr>'
+            # for l in i.split('\t') : line += ('<td>%s</td>' % l)
+            print '<tr>' + line + '</tr>'
 
     except:
         print '<tr><td colspan="4">failed. sorry.</td></tr>'
