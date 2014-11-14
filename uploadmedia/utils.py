@@ -112,7 +112,8 @@ def getNumber(filename):
     # the following is only for bampfa...
     if 'bampfa_' in filename:
         objectnumber = filename.replace('bampfa_', '')
-        objectnumber = objectnumber.replace('-', '.')  # now why would they have done this...?
+        count=objectnumber.count("-")-1
+        objectnumber = objectnumber.replace('-', '.',count)  # now why would they have done this...?
     else:
         objectnumber = filename
     objectnumber = objectnumber.split('_')[0]
