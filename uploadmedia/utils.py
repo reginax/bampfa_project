@@ -2,8 +2,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 import csv
 import codecs
-import sys
-import time, datetime
+import re
 import json
 import logging
 from xml.sax.saxutils import escape
@@ -107,18 +106,24 @@ def get_exif(fn):
         ret[decoded] = value
     return ret
 
+objectnumberpattern = re.compile('([a-z])\.([a-z])')
 
 def getNumber(filename):
-    # the following is only for bampfa...
+    imagenumber = ''
+    # the following is only for bampfa filenames...
     if 'bampfa_' in filename:
         objectnumber = filename.replace('bampfa_', '')
-        count=objectnumber.count("-")-1
-        objectnumber = objectnumber.replace('-', '.',count)  # now why would they have done this...?
+        objectnumber = objectnumber.replace('-', '.')
+        objectnumber = objectnumberpattern.sub(r'\1-\2',objectnumber)
+        try:
+            objectnumber,imagenumber,imagetype = objectnumber.split('_')
+        except:
+            imagenumber = '1'
     else:
         objectnumber = filename
-    objectnumber = objectnumber.split('_')[0]
+        objectnumber = objectnumber.split('_')[0]
     objectnumber = objectnumber.replace('.JPG', '').replace('.jpg', '')
-    return objectnumber
+    return objectnumber,imagenumber
 
 
 def getCSID(objectnumber):

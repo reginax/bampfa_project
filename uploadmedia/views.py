@@ -43,7 +43,7 @@ def uploadfiles(request):
             try:
                 print "%s %s: %s %s (%s %s)" % ('id', lineno, 'name', afile.name, 'size', afile.size)
                 im = get_exif(afile)
-                objectnumber = getNumber(afile.name)
+                objectnumber,imagenumber = getNumber(afile.name)
                 #objectCSID = getCSID(objectnumber)
                 creator, creatorRefname = assignValue(creatorDisplayname,overrideCreator,im,'Artist',dropdowns['creators'])
                 contributor, dummy = assignValue(contributor,overrideContributor,im,'ImageDescription',{})
@@ -51,6 +51,7 @@ def uploadfiles(request):
                 datetimedigitized, dummy = assignValue('','ifblank',im,'DateTimeDigitized',{})
                 imageinfo = {'id': lineno, 'name': afile.name, 'size': afile.size,
                              'objectnumber': objectnumber,
+                             'imagenumber': imagenumber,
                              #'objectCSID': objectCSID,
                              'date': datetimedigitized,
                              'creator': creatorRefname,
@@ -63,7 +64,7 @@ def uploadfiles(request):
                 handle_uploaded_file(afile, imageinfo)
                 images.append(imageinfo)
             except:
-                #raise
+                raise
                 # we still upload the file, anyway...
                 handle_uploaded_file(afile, imageinfo)
                 images.append({'name': afile.name, 'size': afile.size, 'error': 'problem extracting image metadata, not processed'})
@@ -72,7 +73,7 @@ def uploadfiles(request):
             jobnumber = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
             jobinfo['jobnumber'] = jobnumber
             writeCsv(getJobfile(jobnumber)+'.step1.csv', images,
-                     ['name', 'size', 'objectnumber', 'date', 'creator', 'contributor', 'rightsholder'])
+                     ['name', 'size', 'objectnumber', 'date', 'creator', 'contributor', 'rightsholder', 'imagenumber'])
             jobinfo['estimatedtime'] = '%8.1f' % (len(images) * 10 / 60.0)
 
             if 'createmedia' in request.POST:

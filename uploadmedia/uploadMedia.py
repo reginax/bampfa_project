@@ -23,7 +23,7 @@ def mediaPayload(f,institution):
 <blobCsid>%s</blobCsid>
 <rightsHolder>%s</rightsHolder>
 <creator>%s</creator>
-<title>Media record</title>
+<title>%s</title>
 <description>%s</description>
 <languageList>
 <language>urn:cspace:INSTITUTION.cspace.berkeley.edu:vocabularies:name(languages):item:name(eng)'English'</language>
@@ -33,11 +33,17 @@ def mediaPayload(f,institution):
 <ns2:media_INSTITUTION xmlns:ns2="http://collectionspace.org/services/media/local/INSTITUTION" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <approvedForWeb>true</approvedForWeb>
 <primaryDisplay>false</primaryDisplay>
+IMAGENUMBERELEMENT
 </ns2:media_INSTITUTION>
 </document>
-""".replace('INSTITUTION',institution)
+"""
+    if institution == 'bampfa':
+        payload = payload.replace('IMAGENUMBERELEMENT','<imageNumber>%s</imageNumber>' % f['imageNumber'])
+    else:
+        payload = payload.replace('IMAGENUMBERELEMENT','')
+    payload = payload.replace('INSTITUTION',institution)
     payload = payload % (
-        f['blobCsid'], f['rightsHolderRefname'], f['creator'], f['contributor'], f['objectNumber'])
+        f['blobCsid'], f['rightsHolderRefname'], f['creator'], f['name'], f['contributor'], f['objectNumber'])
     return payload
 
 
