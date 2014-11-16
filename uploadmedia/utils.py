@@ -134,7 +134,7 @@ def getCSID(objectnumber):
 
 def writeCsv(filename, items, writeheader):
     filehandle = codecs.open(filename, 'w', 'utf-8')
-    writer = csv.writer(filehandle, delimiter='\t')
+    writer = csv.writer(filehandle, delimiter='|')
     writer.writerow(writeheader)
     for item in items:
         row = []

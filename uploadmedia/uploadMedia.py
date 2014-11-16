@@ -44,6 +44,7 @@ IMAGENUMBERELEMENT
     payload = payload.replace('INSTITUTION',institution)
     payload = payload % (
         f['blobCsid'], f['rightsHolderRefname'], f['creator'], f['name'], f['contributor'], f['objectNumber'])
+    # print payload
     return payload
 
 
@@ -72,7 +73,9 @@ def uploadmedia(mediaElements, config):
                        'subjectCsid': '',
                        'objectCsid': mediaElements['objectCSID'],
                        'objectNumber': mediaElements['objectnumber'],
+                       'imageNumber': mediaElements['imagenumber'],
                        'blobCsid': mediaElements['blobCSID'],
+                       'name': mediaElements['name'],
                        'rightsHolderRefname': mediaElements['rightsholder'],
                        'contributor': mediaElements['contributor'],
                        'creator': mediaElements['creator'],
@@ -184,7 +187,7 @@ if __name__ == "__main__":
         elapsedtimetotal = time.time()
         mediaElements = {}
         for v1, v2 in enumerate(
-                'name size objectnumber blobCSID date creator contributor rightsholder fullpathtofile'.split(' ')):
+                'name size objectnumber blobCSID date creator contributor rightsholder imagenumber filenamewithpath'.split(' ')):
             mediaElements[v2] = r[v1]
         #print mediaElements
         print 'objectnumber %s' % mediaElements['objectnumber']
@@ -198,8 +201,5 @@ if __name__ == "__main__":
         except:
             print "MEDIA: create failed for objectnumber %s, %8.2f" % (
                 mediaElements['objectnumber'], (time.time() - elapsedtimetotal))
-            #raise
-
-
-
+            # raise
 
