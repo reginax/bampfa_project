@@ -1,0 +1,3 @@
+# this is how the jobs are run nightly...
+59 00  * * * shopt -s nullglob; for f in /tmp/bampfa_upload_cache/*.step1.csv; do f=$(echo $f | sed -e 's/\.step1.csv//'); echo  Starting `date` $f >> /tmp/bampfa_upload_cache/batches.log ; time /usr/local/share/django/bampfa_project/uploadmedia/postblob.sh $f >> /tmp/bampfa_upload_cache/batches.log ; echo  Ending `date` $f >> /tmp/bampfa_upload_cache/batches.log ; done > /dev/null 2>&1
+
