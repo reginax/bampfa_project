@@ -145,6 +145,8 @@ INSTALLED_APPS = (
     'imageserver',
     'imagebrowser',
     'imaginator',
+    'locationvisualizer',
+    'authorityeditor',
     'search',
     'uploadmedia'
 )
