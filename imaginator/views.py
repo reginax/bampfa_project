@@ -29,8 +29,19 @@ LAYOUT = config.get('imaginator', 'LAYOUT')
 #@login_required()
 def index(request):
 
+    context = setConstants({})
+
+    # http://blog.mobileesp.com/
+    # the middleware must be installed for the following to work...
+    if request.is_phone:
+        context['device'] = 'phone'
+    elif request.is_tablet:
+        context['device'] = 'tablet'
+    else:
+        context['device'] = 'other'
+
     if request.method == 'GET' and request.GET != {}:
-        context = {'searchValues': request.GET}
+        context['searchValues'] = request.GET
 
         context = setConstants(context)
 
@@ -62,4 +73,4 @@ def index(request):
         return render(request, 'imagineImages.html', context)
 
     else:
-        return render(request, 'imagineImages.html', {'title': TITLE, 'pgNum': 10, 'maxresults': 20})
+        return render(request, 'imagineImages.html', context)

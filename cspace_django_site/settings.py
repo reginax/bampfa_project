@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'imagebrowser',
     'imaginator',
     'locationvisualizer',
+    'locviewer',
     'authorityeditor',
     'search',
     'uploadmedia'
