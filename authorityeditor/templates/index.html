@@ -1,0 +1,46 @@
+{% extends "cspace_django_site/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block content %}
+
+    <h2>{{ instruction }}</h2>
+    {% if error %}
+        <p style="color: red;">Please enter a term.</p>
+    {% endif %}
+    <form action="check" method="get">
+        <input type="text" name="term" value="{{ term }}">
+        <input type="submit" value="Check">
+        <hr/>
+        {% for field in form.hidden_fields %}
+            <div style="display:none;">{{ field }}</div>
+        {% endfor %}
+
+    {% if check %}
+        <input type="text" name="term2change" value="{{ term2change }}">
+        <input type="submit" value="Change">
+        <hr/>
+    {% endif %}
+
+    </form>
+
+    <div id="content-main">
+        <div class="results">
+            <table>
+                <tr>
+                    {% for label in labels %}
+                        <th scope="row">{{ label }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in results %}
+                    <tr>
+                        <td><a target="cspace" href="{{ row.0 }}">{{ row.1 }}</a></td>
+                        {% for cell in row.2 %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
