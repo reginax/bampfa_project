@@ -38,6 +38,13 @@ function clearForm(oForm) {
         switch (field_type) {
 
             case "text":
+                if (elements[i].name == "start"){
+                    elements[i].value = 1;
+                    break;
+                }
+                elements[i].value = "";
+                break;
+
             case "password":
             case "textarea":
                 elements[i].value = "";
@@ -62,7 +69,18 @@ function clearForm(oForm) {
     }
 }
 
-
+function checkPage(Page,increment) {
+    if (!$.isNumeric(Page)) {
+        return false;
+    }
+    var pageNumber = Number(Page);
+    if (pageNumber + increment  >= 1 && pageNumber + increment <= Number($("#lastpage").val())) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 $(document).ready(function () {
 
@@ -70,13 +88,39 @@ $(document).ready(function () {
     //     chooseSlideDirection('#searchfieldsTarget');
     // });
 
+
+    $('#next').click(function() {
+        var $n = $("#start");
+        if (checkPage($n.val(),1)) {
+            $n.val(Number($n.val()) + 1);
+            submitForm('search-list');
+        }
+    });
+
+    $('#prev').click(function() {
+        var $n = $("#start");
+        if (checkPage($n.val(),-1)) {
+            $n.val(Number($n.val()) - 1);
+            submitForm('search-list');
+        }
+    });
+
+
     $('#about').click(function() {
         chooseSlideDirection('#aboutTarget');
         $('#helpTarget').slideUp();
         $('#creditsTarget').slideUp();
+        $('#termsTarget').slideUp();
     });
     $('#help').click(function() {
         chooseSlideDirection('#helpTarget');
+        $('#aboutTarget').slideUp();
+        $('#creditsTarget').slideUp();
+        $('#termsTarget').slideUp();
+    });
+    $('#terms').click(function() {
+        chooseSlideDirection('#termsTarget');
+        $('#helpTarget').slideUp();
         $('#aboutTarget').slideUp();
         $('#creditsTarget').slideUp();
     });
@@ -84,6 +128,7 @@ $(document).ready(function () {
         chooseSlideDirection('#creditsTarget');
         $('#helpTarget').slideUp();
         $('#aboutTarget').slideUp();
+        $('#termsTarget').slideUp();
     });
     
     $("#acceptterms").click(function () {
@@ -95,7 +140,6 @@ $(document).ready(function () {
 
     $('#search-reset').click(function () {
         clearForm($('#search')[0]);
-        // $('#search')[0].reset();
         $('#resultsPanel').html('');
     });
 
@@ -108,6 +152,7 @@ $(document).ready(function () {
             submitForm('search-list');
         }
     });
+
 
     $('[name]').map(function () {
         var elementID = $(this).attr('name');
@@ -132,6 +177,19 @@ $(document).ready(function () {
                 minLength: 2
             });
         }
+    });
+
+    $.tablesorter.addParser({
+        id: 'sortkey',
+        is: function(s, table, cell) {
+            return false;
+        },
+       format: function(s, table, cell, cellIndex) {
+           var $cell = $(cell);
+           return $cell.attr('data-sort') || s;
+           //return $(cell)[0].firstElementChild.getAttribute("data-sort");
+        },
+        type: 'text'
     });
 
     var submitForm = function(displaytype) {
@@ -159,27 +217,29 @@ $(document).ready(function () {
 
             $.post("../results/", formData).done(function (data) {
                 $('#resultsPanel').html(data);
+
                 $('#resultsListing').tablesorter({
+                    theme: 'blue',
                     headers: {
-                        0: {sorter: false},
-                        1: {width: '100px' },
-                        2: {width: '260px' },
-                        4: {width: '90px', sorter: 'isoDate' },
-                        9: {width: '180px' }
+                        1: { sorter:'sortkey' }
                     }
                 });
-                $('#tabs').tabs({ active: 0 });
-                ga('send', 'pageview', { 'page': '/search' });
 
-                $('#resultsPanel').css({
-                    display: "block"
+                $('[id^=Facet]').map(function () {
+                   $(this).tablesorter({theme: 'blue'});
                 });
+
+                $('#tabs').tabs({ active: 0 });
 
                 $('#waitingImage').css({
                     display: "none"
                 });
 
+                $('#resultsPanel').css({
+                    display: "block"
+                });
 
+                ga('send', 'pageview', { 'page': '/search' });
             });
         }
     };
@@ -190,6 +250,10 @@ $(document).ready(function () {
         } else {
             $('#selectedItems input:checkbox').prop('checked', false);
         }
+    });
+
+    $(document).on('click', '.sel-item', function () {
+        $('#select-items').prop('checked', false);
     });
 
     $(document).on('click', '.map-item', function () {
@@ -214,6 +278,9 @@ $(document).ready(function () {
         var key = ($(this).attr('data-facetType'));
         var value = ($(this).text());
 
+        // reset page number to 1 -- this is a new search!
+        $("#start").val( 1 );
+
         if (key != '') {
             console.log(key + ': ' + value);
             var keyElement = $('#' + key);
@@ -232,23 +299,27 @@ $(document).ready(function () {
 
         $.post("../results/", formData).done(function (data) {
             $('#resultsPanel').html(data);
+
             $('#resultsListing').tablesorter({
+                theme: 'blue',
                 headers: {
-                    0: {sorter: false},
-                    1: {width: '100px' },
-                    2: {width: '260px' },
-                    4: {width: '90px', sorter: 'isoDate' },
-                    9: {width: '180px' }
+                    1: { sorter:'sortkey' }
                 }
             });
+
+            $('[id^=Facet]').map(function () {
+               $(this).tablesorter({theme: 'blue'});
+            });
+
             $('#tabs').tabs({ active: 1 });
             ga('send', 'pageview', { 'page': '/search/refine' });
         });
+
     });
 
     $(document).on('click', '#map-bmapper, #map-google', function () {
         var formData = getFormData('#selectedItems');
-        // formData[$(this).attr('name')] = '';
+        formData[$(this).attr('name')] = '';
 
         if ($(this).attr('id') == 'map-bmapper') {
             $.post("../bmapper/", formData).done(function (data) {
@@ -266,5 +337,7 @@ $(document).ready(function () {
 $('#tabs').tabs({ active: 0 });
 // nb: this is a newish browser feature -- HTML5. what it does is to clear the GET parms from the URL in the addr bar.
 //window.history.pushState({},'foo','.')
+// on the first load (or a reload) of the page, clear the form...
+//clearForm($('#search')[0]);
 });
 

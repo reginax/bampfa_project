@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block extrastyle %}
-    <link rel="stylesheet" type="text/css" href="{% static "search/css/tablesorter.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "search/css/theme.blue.css" %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "cspace_django_site/css/smoothness/jquery-ui-1.10.3.custom.min.css" %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "search/css/PublicSearch.css" %}"/>
 {% endblock %}
@@ -12,19 +12,19 @@
     <script type="text/javascript" src="{% static "cspace_django_site/js/jquery-1.10.0.min.js" %}"></script>
     <script type="text/javascript" src="{% static "cspace_django_site/js/jquery-ui-1.10.3.custom.min.js" %}"></script>
     <script type="text/javascript" src="{% static "search/js/PublicSearch.js" %}"></script>
-    <script type="text/javascript" src="{% static "search/js/jquery.tablesorter.js" %}"></script>
+    <script type="text/javascript" src="{% static "search/js/jquery.tablesorter.min.js" %}"></script>
 {% endblock %}
 
 {% block loginBtn %}
 <div id="user-tools">
-    <a href="{% url 'login' %}?next=/bampfa_project/search/search/" id="login" class="prettyBtn">{% trans 'Sign in' %}</a>
+    <a href="{% url 'login' %}?next=/pahma_project/search/search/" id="login" class="prettyBtn">{% trans 'Sign in' %}</a>
 </div>
 {% endblock %}
 
 {% block branding %}
     <h4 class="bannerLeft"></h4>
     <h4 class="bannerRight"></h4>
-    <h1 class="bannerTitle" id="site-name">{% trans apptitle %}</h1>
+    <h1 class="bannerTitle" id="site-name">{{ apptitle }}</h1>
     <div style="float:right; height: 30px;">
         <a href="#" id="about">About</a>
         <a href="#" id="help">Help</a>
@@ -45,6 +45,9 @@
             <div id="creditsTarget" style="display:none">
                 {% include "credits.html" %}
             </div>
+            <div id="termsTarget" style="display:none">
+                {% include "terms.html" %}
+            </div>
         </div>
         <div class="searchPanel">
             {% if resultsOnly %}
@@ -52,7 +55,6 @@
             {% else %}
                 <form class="searchForm" id="search">
                     {% csrf_token %}
-                    <!-- h3 id="hidefields" style="display: none">Show Search Parameters</h3 -->
                     <div id="searchfieldsTarget">
                         {% include "fields.html" %}
                         {% include "buttons.html" %}
