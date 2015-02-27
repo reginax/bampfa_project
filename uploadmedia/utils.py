@@ -107,7 +107,7 @@ def get_exif(fn):
     return ret
 
 
-objectnumberpattern = re.compile('([a-zA-Z]+)\.([a-zA-Z0-9]+)$')
+objectnumberpattern = re.compile('([a-z]+)\.([a-zA-Z0-9]+)')
 
 def getNumber(filename):
     imagenumber = ''
