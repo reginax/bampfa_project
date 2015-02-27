@@ -106,24 +106,27 @@ def get_exif(fn):
         ret[decoded] = value
     return ret
 
-objectnumberpattern = re.compile('([a-z])\.([a-z])')
+
+objectnumberpattern = re.compile('([a-zA-Z]+)\.([a-zA-Z0-9]+)$')
 
 def getNumber(filename):
     imagenumber = ''
     # the following is only for bampfa filenames...
     if 'bampfa_' in filename:
         objectnumber = filename.replace('bampfa_', '')
-        objectnumber = objectnumber.replace('-', '.')
-        objectnumber = objectnumberpattern.sub(r'\1-\2',objectnumber)
         try:
-            objectnumber,imagenumber,imagetype = objectnumber.split('_')
+            objectnumber, imagenumber, imagetype = objectnumber.split('_')
         except:
             imagenumber = '1'
+        #numHyphens = objectnumber.count("-") - 1
+        #objectnumber = objectnumber.replace('-', '.', numHyphens)
+        objectnumber = objectnumber.replace('-', '.')
+        objectnumber = objectnumberpattern.sub(r'\1-\2',objectnumber)
     else:
         objectnumber = filename
         objectnumber = objectnumber.split('_')[0]
     objectnumber = objectnumber.replace('.JPG', '').replace('.jpg', '')
-    return objectnumber,imagenumber
+    return filename, objectnumber, imagenumber
 
 
 def getCSID(objectnumber):
@@ -183,7 +186,7 @@ def assignValue(defaultValue, override, imageData, exifvalue, refnameList):
 def viewFile(logfilename, numtodisplay):
     print '<table width="100%">\n'
     print ('<tr>' + (4 * '<th class="ncell">%s</td>') + '</tr>\n') % (
-    'locationDate,objectNumber,objectStatus,handler'.split(','))
+        'locationDate,objectNumber,objectStatus,handler'.split(','))
     try:
         file_handle = open(logfilename)
         file_size = file_handle.tell()
