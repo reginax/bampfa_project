@@ -28,7 +28,7 @@ authn.cfg.
 
 To allow more flexibility in how this AuthN back-end is initialized, the current code also supports the following:
 If some of the values from the main.cfg files are missing or empty then the corresponding non-missing,
-non-empty values in the authn.cfg will be used.  Also, if the "override" property in the authn.cfg file is
-set to "True" then the values in authn.cfg will override those of the main.cfg file.
+non-empty values in the authn.cfg will be used.  Also, if the "override" property in the authn.cfg file is set to "True" then
+the values in authn.cfg will override those of the main.cfg file.
 
 

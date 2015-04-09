@@ -1,6 +1,7 @@
 # Django settings for cspace_django_site project.
 import os
 import logging
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_PARENT_DIR = os.path.dirname(BASE_DIR)
@@ -122,6 +123,8 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
     # Don't forget to use absolute paths, not relative paths.
 #)
 
+TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -138,7 +142,6 @@ INSTALLED_APPS = (
     'ireports',
     'edit',
     'landing',
-    'toolbox',
     'suggestpostgres',
     'suggestsolr',
     'suggest',
