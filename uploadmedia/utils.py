@@ -96,14 +96,17 @@ def getDropdowns():
     }
 
 
-# following function take from stackoverflow...thanks!
+# following function taken from stackoverflow and modified...thanks!
 def get_exif(fn):
     ret = {}
     i = Image.open(fn)
-    info = i._getexif()
-    for tag, value in info.items():
-        decoded = TAGS.get(tag, tag)
-        ret[decoded] = value
+    try:
+        info = i._getexif()
+        for tag, value in info.items():
+            decoded = TAGS.get(tag, tag)
+            ret[decoded] = value
+    except:
+        pass
     return ret
 
 

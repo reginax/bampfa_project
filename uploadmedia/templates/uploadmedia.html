@@ -8,14 +8,23 @@
     <script type="text/javascript" src="{% static "search/js/jquery.tablesorter.min.js" %}"></script>
 {% endblock %}
 
+<!-- Overwrite default placement of login button, included below in branding block -->
+{% block loginBtn %}{% endblock %}
 
-{% block loginBtn %}
-    <div id="user-tools">
-        <a href="{% url 'login' %}?next=/bampfa_project/uploadmedia" id="login"
-           class="prettyBtn">{% trans 'Sign in' %}</a>
+{% block branding %}
+    <h4 class="bannerLeft"></h4>
+    <h4 class="bannerRight"></h4>
+    <h1 class="bannerTitle" id="site-name">{{ apptitle }}</h1>
+
+    <!-- div class="user-tools" -->
+    <div class="unit" style="float:right;">
+        {% include "cspace_django_site/loginBtn.html" with loginBtnNext="showqueue/" %}
+    </div>
+    <div style="float:right; margin-top: 6px;" class="unit">
+        <a href="#" id="about">About</a>
+        <a href="#" id="help">Help</a>
     </div>
 {% endblock %}
-
 
 {% block content %}
     <div id="content-main">

@@ -12,7 +12,7 @@ BMU has two components:
 
 To deploy it on an IS&T server (RHEL VM):
 
-* Clone this repo (bampfa_project) and install and configure the Django
+* Clone this repo (pahma_project) and install and configure the Django
   webapp "as usual".
 
 * Follow the following steps to configure the batch component to run in
@@ -56,13 +56,13 @@ To deploy it on an IS&T server (RHEL VM):
   script that reports on the status of uploads that runs via cron as
   well.
 
-  Here is the current crontab for apache on bampfa-dev, where this
+  Here is the current crontab for apache on pahma-dev, where this
   webapp runs:
 
-[jblowe@bampfa-dev ~]$ sudo crontab -u apache -l
+[jblowe@pahma-dev ~]$ sudo crontab -u apache -l
 
-10  5  * * * perl /usr/local/share/django/bampfa_project/uploadmedia/checkRuns.pl jobs | expand -12 | mail -s "recent BMU jobs" bampfa-cspace@berkeley.edu > /dev/null 2>&1
-59 21  * * * shopt -s nullglob; for f in /tmp/upload_cache/*.step1.csv; do f=$(echo $f | sed -e 's/\.step1.csv//'); echo  Starting `date` $f >> /tmp/upload_cache/batches.log ; time /usr/local/share/django/bampfa_project/uploadmedia/postblob.sh $f >> /tmp/upload_cache/batches.log ; echo  Ending `date` $f >> /tmp/upload_cache/batches.log ; done > /dev/null 2>&1
+10  5  * * * perl /usr/local/share/django/pahma_project/uploadmedia/checkRuns.pl jobs | expand -12 | mail -s "recent BMU jobs" pahma-cspace@berkeley.edu > /dev/null 2>&1
+59 21  * * * shopt -s nullglob; for f in /tmp/upload_cache/*.step1.csv; do f=$(echo $f | sed -e 's/\.step1.csv//'); echo  Starting `date` $f >> /tmp/upload_cache/batches.log ; time /usr/local/share/django/pahma_project/uploadmedia/postblob.sh $f >> /tmp/upload_cache/batches.log ; echo  Ending `date` $f >> /tmp/upload_cache/batches.log ; done > /dev/null 2>&1
 
 A few more details on the batch process:
 
@@ -157,10 +157,10 @@ e.g.
 
 2014:10:13 09:18:25
 
-urn:cspace:bampfa.cspace.berkeley.edu:personauthorities:name(person):item:name(7652)'A Person Name'
+urn:cspace:pahma.cspace.berkeley.edu:personauthorities:name(person):item:name(7652)'A Person Name'
 
 Trinity Miller
 
-urn:cspace:bampfa.cspace.berkeley.edu:orgauthorities:name(organization):item:name(8107)'Phoebe A. Hearst Museum of Anthropology'
+urn:cspace:pahma.cspace.berkeley.edu:orgauthorities:name(organization):item:name(8107)'Phoebe A. Hearst Museum of Anthropology'
 
 NB: the image files mentioned in this file must also be present in this same directory.

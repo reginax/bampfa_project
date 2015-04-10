@@ -80,6 +80,7 @@ a:hover { color: #036; }
     vertical-align: top;
     position: relative;
     min-height: 320px;
+    max-width: 600px;
     overflow: hidden;
 }
 
@@ -246,7 +247,7 @@ a#logout:hover { background-color: #333; color: #FFF; }
         Then comment the following background line, and uncomment the line after that. */
     
     #background: url(../images/header-logo-cspace.png) no-repeat right top;
-    background: url(../images/header-logo-bampfa.png) no-repeat left top, url(../images/header-logo-cspace.png) no-repeat right top;
+    background: url(../images/header-logo.png) no-repeat left top, url(../images/header-logo-cspace.png) no-repeat right top;
 }
 
 #login-content p {

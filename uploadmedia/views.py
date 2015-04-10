@@ -1,7 +1,7 @@
 __author__ = 'jblowe'
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 from django import forms
@@ -15,7 +15,6 @@ TITLE = 'Bulk Media Upload'
 
 overrides = [['ifblank', 'Overide only if blank'],
              ['always', 'Always Overide']]
-
 
 @login_required()
 def uploadfiles(request):
