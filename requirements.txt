@@ -1,0 +1,16 @@
+Django==1.7
+Pillow
+PyGreSQL
+Pygments
+django-extensions
+django-filter
+django-positions
+django-tables2
+django-tables2-reports
+djangorestframework
+itsdangerous
+numpy
+pyzmq
+requests
+six
+solrpy

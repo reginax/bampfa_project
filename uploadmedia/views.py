@@ -8,7 +8,7 @@ from django.conf import settings
 from django import forms
 import json
 import time, datetime
-from common.cspace import logged_in_or_basicauth
+#from common.cspace import logged_in_or_basicauth
 from utils import SERVERINFO, getDropdowns, handle_uploaded_file, assignValue, getCSID, getNumber, get_exif, writeCsv, \
     getJobfile, getJoblist, loginfo, getQueue
 import subprocess
@@ -125,7 +125,7 @@ def setConstants(request, im):
 
 
 @csrf_exempt
-@logged_in_or_basicauth()
+#@logged_in_or_basicauth()
 def rest(request, action):
     elapsedtime = time.time()
     status = 'error' # assume murphy's law applies...

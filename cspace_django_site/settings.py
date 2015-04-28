@@ -6,6 +6,7 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_PARENT_DIR = os.path.dirname(BASE_DIR)
 LOGS_DIR = BASE_PARENT_DIR + os.sep + 'logs'
+PROJECT_NAME = os.path.basename(BASE_PARENT_DIR)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -26,6 +27,14 @@ DATABASES = {
         'HOST': '',              # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',              # Set to empty string for default.
     }
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -72,7 +81,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '../static_root')
 
 # URL prefix for static files.
 # Example: "http://intakes.com/static/", "http://static.intakes.com/"
-STATIC_URL = '/bampfa_project_static/'
+STATIC_URL = '/' + PROJECT_NAME + '_static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -133,6 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'django_tables2',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -153,7 +163,8 @@ INSTALLED_APPS = (
     'locviewer',
     'authorityeditor',
     'search',
-    'uploadmedia'
+    'uploadmedia',
+    'batchuploadimages'
 )
 
 # A sample logging configuration. The only tangible logging
