@@ -1,8 +1,17 @@
 __author__ = 'jblowe'
+from django.conf.urls import patterns, include, url
 
-from django.conf.urls import patterns, url
-from batchuploadimages import views
+# Function based API views
+from batchuploadimages.views import image_list, image_detail
+#from batchuploadimages.views import ImageView
 
 urlpatterns = patterns('',
-                       url(r'^uploadimage/(?P<image>.+)$',views.post_item,name='get_image'),
-                       )
+
+                       # Regular URLs  # url(r'^images/$', image_list, name='image_list'),
+                       # url(r'^images/(?P<pk>[0-9]+)$', image_detail, name='image_detail'),
+
+                       # Class based URLs,
+                       url(r'^images/$', image_list, name='image_list'),
+                       url(r'^images/(?P<pk>[0-9]+)$', image_detail, name='image_detail'),
+                       #url(r'^images/(?P<pk>[0-9]+)$', ImageView, name='image_detail'),
+)
