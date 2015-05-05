@@ -164,7 +164,7 @@ INSTALLED_APPS = (
     'authorityeditor',
     'search',
     'uploadmedia',
-    'batchuploadimages'
+    #'batchuploadimages'
 )
 
 # A sample logging configuration. The only tangible logging
