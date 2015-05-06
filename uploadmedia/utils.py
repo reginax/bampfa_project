@@ -86,7 +86,7 @@ def getJoblist():
             errors.append([ajob[0], image])
         for state in ajob[2]:
             if state[1] in ['ingested', 'pending', 'job started']: ajob[1] = False
-    return joblist[0:200], errors, len(joblist), len(errors)
+    return joblist[0:500], errors, len(joblist), len(errors)
 
 
 def checkFile(filename):
