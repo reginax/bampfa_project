@@ -26,7 +26,7 @@ server = protocol + "://" + hostname + port
 logger = logging.getLogger(__name__)
 logger.info('%s :: %s :: %s' % ('imageserver startup', '-', '%s' % server))
 
-#@login_required()
+@login_required()
 def get_image(request, image):
     try:
         elapsedtime = time.time()
