@@ -14,7 +14,7 @@ hostname = cspace.getConfigOptionWithSection(config,
 
 TITLE = 'Applications Available'
 
-hiddenApps = 'hello service suggest suggestsolr suggestpostgres solarapi imageserver landing'.split(' ')
+hiddenApps = 'hello service suggest suggestsolr suggestpostgres solarapi imageserver landing locviewer'.split(' ')
 loginRequiredApps = 'ireports search uploadmedia'.split(' ')
 
 #@login_required()

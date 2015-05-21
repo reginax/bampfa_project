@@ -6,10 +6,10 @@ import json
 #from common.cspace import logged_in_or_basicauth
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.servers.basehttp import FileWrapper
-from django.conf import settings
-from django import forms
+#from django.conf import settings
+#from django import forms
 import time, datetime
-from utils import SERVERINFO, getDropdowns, handle_uploaded_file, assignValue, getCSID, getNumber, get_exif, writeCsv, \
+from utils import SERVERINFO, POSTBLOBPATH, getDropdowns, handle_uploaded_file, assignValue, getCSID, getNumber, get_exif, writeCsv, \
     getJobfile, getJoblist, loginfo, getQueue
 import subprocess
 
@@ -76,7 +76,7 @@ def prepareFiles(request, validateonly, dropdowns):
                 loginfo('start', getJobfile(jobnumber), request)
                 try:
                     retcode = subprocess.call(
-                        ["/usr/local/share/django/bampfa_project/uploadmedia/postblob.sh", getJobfile(jobnumber)])
+                        [POSTBLOBPATH, getJobfile(jobnumber)])
                     if retcode < 0:
                         loginfo('process', jobnumber + " Child was terminated by signal %s" % -retcode, request)
                     else:
