@@ -235,6 +235,36 @@ $(document).ready(function () {
         $('#select-items').prop('checked', false);
     });
 
+    $(document).on('click', '#summarize', function () {
+
+        $('#waitingImage').css({
+            display: "block"
+        });
+
+        var formData = getFormData('#selectedItems');
+        formData[$(this).attr('name')] = '';
+
+        if ($(this).attr('id') == 'summarize') {
+            $.post("../statistics/", formData).done(function (data) {
+                $('#statsresults').html(data);
+            });
+            ga('send', 'pageview', { 'page': '/summarize/display' });
+//        } else if ($(this).attr('id') == 'downloadstats') {
+//            $.post("../statistics/", formData).done(function (data) {
+//                alert( "success" );
+//            });
+//            ga('send', 'pageview', { 'page': '/summarize/download' });
+        }
+
+        $('#waitingImage').css({
+            display: "none"
+        });
+
+        $('#statsListing').tablesorter({theme: 'blue'});
+
+        ga('send', 'pageview', { 'page': '/statistics' });
+    });
+
     $(document).on('click', '.map-item', function () {
         var Elem = $(this).siblings('.small-map');
         if ($(Elem).css("display") == "none") {

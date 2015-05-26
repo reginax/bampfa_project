@@ -12,7 +12,7 @@ core	bampfa-metadata
 #		Fields						row,column							
 #															
 header		Name	Label	SolrField	Searchable	Suggestions	Role	Search	Facet	bMapper	fullDisplay	listDisplay	gridDisplay	inCSV	placeholder
-field	1	id	ID	id			id							1	x
+field	1	id	ID	id			id,csid							1	x
 field	2	idnumber	ID Number	idnumber_s		ob	objectno,accession,string	1,1				1		2	x
 field	3	sortobjectnumber	sortobject Number	sortobjectnumber_s			string,sortkey							3	x
 field	4	othernumber	Other Number	othernumber_s	x		keyword	2,1			1			4	x
@@ -50,7 +50,8 @@ field	34	subjectthree	Subjectthree	subjectthree_s	x		keyword				28			30	x
 field	35	subjectfour	Subjectfour	subjectfour_s	x		keyword				29			31	x
 field	36	subjectfive	Subjectfive	subjectfive_s	x		keyword				30			32	x
 field	37	currentlocation	Current location	currentlocation_s	x		keyword				30			33	x
-field	38	currentcrate	Current crate	currentcrate_s	x		keyword				31			34	x
+field	38	currentcrate	Current crate	currentcrate_s	x	lo	keyword	11,1			31			34	x
 field	39	blobs	blobs	blob_ss	x		blob								x
 field	40	text	Keyword	text	x		keyword	10,1							x
+#	for now, we need a dummy location value in this file.														
 field	41	latlong	LatLong	latlong_p	x		location								x
