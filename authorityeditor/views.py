@@ -4,7 +4,7 @@ import os
 import re
 import sys
 import time
-import pgdb
+import psycopg2
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -107,7 +107,7 @@ def makePayload(parms):
 
 
 def findrefname(table, term, config):
-    dbconn = pgdb.connect(database=config.get('connect', 'connect_string'))
+    dbconn = psycopg2.connect(database=config.get('connect', 'connect_string'))
     objects = dbconn.cursor()
 
     query = "select refname from %s where refname ILIKE '%%''%s''%%'" % (table, term.replace("'", "''"))
