@@ -52,7 +52,7 @@ timeoutcommand = 'set statement_timeout to 500'
 
 
 def getlocations(connect_string):
-    postgresdb = psycopg2.connect(database=config.get('connect', 'connect_string'))
+    postgresdb = psycopg2.connect(config.get('connect', 'connect_string'))
     cursor = postgresdb.cursor()
 
     try:

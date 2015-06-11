@@ -107,7 +107,7 @@ def makePayload(parms):
 
 
 def findrefname(table, term, config):
-    dbconn = psycopg2.connect(database=config.get('connect', 'connect_string'))
+    dbconn = psycopg2.connect(config.get('connect', 'connect_string'))
     objects = dbconn.cursor()
 
     query = "select refname from %s where refname ILIKE '%%''%s''%%'" % (table, term.replace("'", "''"))

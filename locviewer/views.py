@@ -41,7 +41,7 @@ timeoutcommand = 'set statement_timeout to 500'
 
 
 def getlocations(connect_string):
-    postgresdb = psycopg2.connect(database=connect_string)
+    postgresdb = psycopg2.connect(connect_string)
     cursor = postgresdb.cursor()
 
     try:
@@ -88,14 +88,7 @@ def getlocations(connect_string):
         return None
 
 
-#@login_required()
-#def postgresrequest(request):
-#    elementID = request.GET['elementID']
-#    q = request.GET['q']
-#    return HttpResponse(dbtransaction(q,elementID,connect_string), content_type='text/json')
-
-
-#@login_required()
+@login_required()
 def locations(request):
     if request.method == 'GET' and request.GET != {}:
         context = {'searchValues': request.GET}
@@ -115,10 +108,11 @@ def locations(request):
 
         locations = getlocations(connect_string)
         context['locations'] = locations
+        context['loginBtnNext'] = 'locviewer/'
 
         return render(request, 'viewLocations.html', context)
 
     else:
         return render(request, 'viewLocations.html',
                       {'title': TITLE, 'pgNum': 10, 'maxresults': 20,
-                       'imageserver': IMAGESERVER})
+                       'imageserver': IMAGESERVER, 'loginBtnNext': 'locviewer/'})
