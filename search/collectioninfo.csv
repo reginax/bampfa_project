@@ -7,7 +7,7 @@ title	Collections Browser
 #															
 #															
 server	http://localhost:8983/solr														
-core	bampfa-metadata														
+core	bampfa-internal														
 #															
 #		Fields						row,column							
 #															
