@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-                       url(r'^$', 'hello.views.home', name='home'),
+                       url(r'^$', 'landing.views.index', name='index'),
                        url(r'^service/', include('service.urls')),
                        url(r'^edit/', include('edit.urls')),
                        url(r'^suggestpostgres/', include('suggestpostgres.urls', namespace='suggestpostgres')),
